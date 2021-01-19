@@ -1,0 +1,53 @@
+﻿
+<p>You are now playing 21 inside the child component.</p>
+
+@if (showButton == true)
+{
+	@if (counts < 22 && counts > 0)
+	{
+		<p>Your current score is <span style="color:red;">@counts</span> but you may twist by clicking the button below...</p>
+		<button @onclick="HitMe">Hit me!</button>
+	}
+	else
+	{
+		<p>Your current score is @counts but you have busted. You lose!</p>
+		<button @onclick="Reset">Play pointless game again!</button>
+	}
+
+}
+else
+{
+	<p><em>The score cannot be changed. The final score was @counts. You lost! You needed to score higher than 18 to win!</em></p>
+
+}
+
+
+@code {
+	// Demonstrates how a parent component can supply parameters
+	[Parameter]
+	public int counts { get; set; }
+	[Parameter]
+	public bool showButton { get; set; }
+	public int min = 1;
+	public int max = 10;
+
+	private bool totalScore { get; set; }
+
+	private void HitMe()
+	{
+
+		Random random = new Random();
+		int number = random.Next(min, max);
+
+		counts = counts + number;
+	}
+
+	private void Reset()
+	{
+		Random random = new Random();
+		int number = random.Next(min, max);
+
+		counts = number;
+	}
+
+}

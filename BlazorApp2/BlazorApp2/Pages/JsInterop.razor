@@ -1,0 +1,38 @@
+﻿@page "/jsInterop"
+@inject IJSRuntime JsRuntime
+
+<h3>JSD Interop example</h3>
+
+<h3> Create an alert using C#</h3>
+
+<button class="btn btn-success" @onclick="ShowAlert"> Show Alert</button>
+
+<h3> Set a question for a prompt to ask you using C# and then display the answer</h3>
+
+<input @bind="questionText" />
+
+<button class="btn btn-warning" @onclick="AskQuestion"> Ask a question</button>
+
+<div>The answer was: <span id="answerSpan"></span></div>
+
+@code {
+
+	string questionText = string.Empty;
+
+
+	async Task ShowAlert()
+	{
+		await JsRuntime.InvokeVoidAsync(identifier: "createAlert");
+	}
+
+	async Task AskQuestion()
+	{
+		var response = await JsRuntime.InvokeAsync<string>(identifier: "createPrompt",questionText);
+
+		await JsRuntime.InvokeVoidAsync(identifier: "setElementTextById", "answerSpan", response);
+
+
+	}
+
+}
+
